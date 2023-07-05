@@ -37,7 +37,7 @@ func gaugePage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// контроль длинны карты
-		if _, ok := MemMetric.gauge[aSt[3]]; ok == false && len(MemMetric.gauge) > LenArr {
+		if _, ok := MemMetric.gauge[aSt[3]]; !ok && len(MemMetric.gauge) > LenArr {
 			res.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -81,7 +81,7 @@ func counterPage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// контроль длинны карты
-		if _, ok := MemMetric.counter[aSt[3]]; ok == false && len(MemMetric.counter) > LenArr {
+		if _, ok := MemMetric.counter[aSt[3]]; !ok && len(MemMetric.counter) > LenArr {
 			res.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -99,11 +99,23 @@ func counterPage(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(http.StatusMethodNotAllowed)
 }
 
+func errorPage(res http.ResponseWriter, req *http.Request) {
+	if req.Method == http.MethodPost {
+
+		res.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	res.WriteHeader(http.StatusMethodNotAllowed)
+	return
+}
+
 func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc(`/update/gauge/`, gaugePage)
 	mux.HandleFunc(`/update/counter/`, counterPage)
+	mux.HandleFunc(`/`, errorPage)
 	MemMetric.gauge = make(map[string]float64, LenArr)
 	MemMetric.counter = make(map[string]int64, LenArr)
 	//gaugeMetric.val = m
