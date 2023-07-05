@@ -107,7 +107,6 @@ func errorPage(res http.ResponseWriter, req *http.Request) {
 	}
 
 	res.WriteHeader(http.StatusMethodNotAllowed)
-	return
 }
 
 func main() {
