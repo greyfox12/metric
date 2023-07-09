@@ -1,20 +1,12 @@
 package main
 
 import (
-	"fmt"
+	//	"fmt"
 	"net/http"
 	"net/http/httptest"
 
 	"testing"
 )
-
-//type Client struct {
-//	url string
-//}
-
-//func NewClient(url string) Client {
-//	return Client{url}
-//}
 
 func TestClientPostCounter(t *testing.T) {
 	ListGauge = make(map[int]GaugeMetric)
@@ -25,9 +17,9 @@ func TestClientPostCounter(t *testing.T) {
 
 	ListCounter[1] = CounterMetric{"PollCount", counter(100)}
 
-	expected := "dummy data"
+	//	expected := "dummy data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, expected)
+		//		fmt.Fprintf("NewServer w=%v expected=%v\n", w, expected)
 	}))
 	defer svr.Close()
 	c := NewClient(svr.URL)
