@@ -8,8 +8,8 @@ import (
 
 const (
 	ServerAdr      = "http://localhost:8080"
-	pollInterval   = 1
-	reportInterval = 1
+	pollInterval   = 2
+	reportInterval = 10
 )
 
 type counter int64
@@ -67,38 +67,11 @@ func main() {
 
 		ListCounter[1] = CounterMetric{"PollCount", counter(PollCount)}
 
-		//		if PollCount%(reportInterval/pollInterval) == 0 {
-		//			_ = PostCounter(ListGauge, ListCounter)
-		_ = client.PostCounter(ListGauge, ListCounter)
-		//		}
+		if PollCount%(reportInterval/pollInterval) == 0 {
+			_ = client.PostCounter(ListGauge, ListCounter)
+		}
 
 		time.Sleep(pollInterval * time.Second)
-		/*		fmt.Printf("%v\n", m.Alloc)
-				fmt.Printf("%v\n", m.BuckHashSys)
-				fmt.Printf("%v\n", m.Frees)
-				fmt.Printf("%v\n", m.GCCPUFraction)
-				fmt.Printf("%v\n", m.GCSys)
-				fmt.Printf("%v\n", m.HeapAlloc)
-				fmt.Printf("%v\n", m.HeapIdle)
-				fmt.Printf("%v\n", m.HeapObjects)
-				fmt.Printf("%v\n", m.HeapReleased)
-				fmt.Printf("%v\n", m.HeapSys)
-				fmt.Printf("%v\n", m.LastGC)
-				fmt.Printf("%v\n", m.Lookups)
-				fmt.Printf("%v\n", m.MCacheInuse)
-				fmt.Printf("%v\n", m.MCacheSys)
-				fmt.Printf("%v\n", m.Mallocs)
-				fmt.Printf("%v\n", m.NextGC)
-				fmt.Printf("%v\n", m.NumForcedGC)
-				fmt.Printf("%v\n", m.NumGC)
-				fmt.Printf("%v\n", m.OtherSys)
-				fmt.Printf("%v\n", m.PauseTotalNs)
-				fmt.Printf("%v\n", m.StackInuse)
-				fmt.Printf("%v\n", m.StackSys)
-				fmt.Printf("%v\n", m.Sys)
-				fmt.Printf("%v\n", m.TotalAlloc)*/
-		//		fmt.Printf("%v\n", PollCount)
-		//		fmt.Printf("%v\n", RandomValue)
 
 		PollCount++
 	}
