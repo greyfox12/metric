@@ -15,10 +15,12 @@ func NewClient(url string) Client {
 
 func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) int {
 	//	fmt.Printf("Time: %v\n", time.Now().Unix())
+	fmt.Printf("URL: %v\n", c.url)
+
 	for _, val := range ga {
 		//   resp, err := http.Post(url string, contentType string, body io.Reader)
 		//		fmt.Printf("Name: %v  Val: %v\n", val.name, val.Val)
-		s := fmt.Sprintf("%sgauge/%s/%v", ServerAdr, val.name, val.Val)
+		s := fmt.Sprintf("%s/update/gauge/%s/%v", c.url, val.name, val.Val)
 		//		fmt.Printf("%s\n", s)
 		resp, err := http.Post(s, "Content-Type: text/plain", nil)
 
@@ -32,7 +34,7 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 	for _, val := range co {
 		//   resp, err := http.Post(url string, contentType string, body io.Reader)
 		//		fmt.Printf("Name: %v  Val: %v\n", val.name, val.Val)
-		s := fmt.Sprintf("%scounter/%s/%v", ServerAdr, val.name, val.Val)
+		s := fmt.Sprintf("%s/update/counter/%s/%v", c.url, val.name, val.Val)
 		//		fmt.Printf("%s\n", s)
 		resp, err := http.Post(s, "Content-Type: text/plain", nil)
 

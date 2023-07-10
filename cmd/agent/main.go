@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	ServerAdr      = "http://localhost:8080/update/"
+	ServerAdr      = "http://localhost:8080"
 	pollInterval   = 2
 	reportInterval = 10
 )
@@ -34,7 +34,7 @@ func main() {
 	ListGauge = make(map[int]GaugeMetric)
 	ListCounter = make(map[int]CounterMetric)
 
-	client := NewClient("http://localhost:8080")
+	client := NewClient(ServerAdr)
 
 	for {
 		runtime.ReadMemStats(&m)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	//	"fmt"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 
@@ -21,7 +21,9 @@ func TestClientPostCounter(t *testing.T) {
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//		fmt.Fprintf("NewServer w=%v expected=%v\n", w, expected)
 	}))
+
 	defer svr.Close()
+	fmt.Printf("svr.URL=%s\n", svr.URL)
 	c := NewClient(svr.URL)
 	err := c.PostCounter(ListGauge, ListCounter)
 	if err != 0 {
