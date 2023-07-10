@@ -8,8 +8,8 @@ import (
 
 const (
 	ServerAdr      = "http://localhost:8080"
-	pollInterval   = 2
-	reportInterval = 10
+	pollInterval   = 1
+	reportInterval = 1
 )
 
 type counter int64
@@ -67,10 +67,10 @@ func main() {
 
 		ListCounter[1] = CounterMetric{"PollCount", counter(PollCount)}
 
-		if PollCount%(reportInterval/pollInterval) == 0 {
-			//			_ = PostCounter(ListGauge, ListCounter)
-			_ = client.PostCounter(ListGauge, ListCounter)
-		}
+		//		if PollCount%(reportInterval/pollInterval) == 0 {
+		//			_ = PostCounter(ListGauge, ListCounter)
+		_ = client.PostCounter(ListGauge, ListCounter)
+		//		}
 
 		time.Sleep(pollInterval * time.Second)
 		/*		fmt.Printf("%v\n", m.Alloc)
