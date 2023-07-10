@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
 type Client struct {
@@ -15,7 +14,7 @@ func NewClient(url string) Client {
 }
 
 func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) int {
-	fmt.Printf("Time: %v\n", time.Now().Unix())
+	//	fmt.Printf("Time: %v\n", time.Now().Unix())
 	for _, val := range ga {
 		//   resp, err := http.Post(url string, contentType string, body io.Reader)
 		//		fmt.Printf("Name: %v  Val: %v\n", val.name, val.Val)
@@ -43,6 +42,6 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 		defer resp.Body.Close()
 
 	}
-	fmt.Printf("\n")
+	//	fmt.Printf("\n")
 	return 0
 }
