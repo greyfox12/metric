@@ -28,7 +28,6 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 			panic(err)
 		}
 		defer resp.Body.Close()
-
 	}
 
 	for _, val := range co {

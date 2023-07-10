@@ -31,9 +31,7 @@ func GaugePage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		//		metricVal, err := strconv.ParseFloat(aSt[4], 64)
-		_, err := strconv.ParseFloat(aSt[4], 64)
-
+		metricVal, err := strconv.ParseFloat(aSt[4], 64)
 		if err != nil {
 			res.WriteHeader(http.StatusBadRequest)
 			return
@@ -45,7 +43,7 @@ func GaugePage(res http.ResponseWriter, req *http.Request) {
 		}
 		// Добавляю новую метрику
 
-		//		MemMetric.gauge[aSt[3]] = metricVal
+		MemMetric.gauge[aSt[3]] = metricVal
 
 		//		body += fmt.Sprintf("Длинна: %s\r\n", len(aSt))
 		//		body := fmt.Sprintf("Длинна: %s\r\n", len(MemMetric.gauge))
@@ -85,8 +83,7 @@ func CounterPage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		//		metricVal, err := strconv.ParseInt(aSt[4], 10, 64)
-		_, err := strconv.ParseInt(aSt[4], 10, 64)
+		metricVal, err := strconv.ParseInt(aSt[4], 10, 64)
 		if err != nil {
 			res.WriteHeader(http.StatusBadRequest)
 			return
@@ -98,7 +95,7 @@ func CounterPage(res http.ResponseWriter, req *http.Request) {
 		}
 		// Добавляю новую метрику
 
-		//		MemMetric.counter[aSt[3]] += metricVal
+		MemMetric.counter[aSt[3]] += metricVal
 
 		//		body += fmt.Sprintf("Длинна: %s\r\n", len(aSt))
 		//		body := fmt.Sprintf("Длинна: %s\r\n", len(MemMetric.counter))
