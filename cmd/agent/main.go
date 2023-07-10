@@ -34,9 +34,9 @@ func main() {
 	ListGauge = make(map[int]GaugeMetric)
 	ListCounter = make(map[int]CounterMetric)
 
-	client := NewClient(ServerAdr)
+	client := NewClient("http://localhost:8080")
 
-	for PollCount < 1000 {
+	for {
 		runtime.ReadMemStats(&m)
 		RandomValue = gauge(rand.Float64())
 		ListGauge[1] = GaugeMetric{"Alloc", gauge(m.Alloc)}
