@@ -22,11 +22,11 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 		s := fmt.Sprintf("%sgauge/%s/%v", ServerAdr, val.name, val.Val)
 		//		fmt.Printf("%s\n", s)
 		resp, err := http.Post(s, "Content-Type: text/plain", nil)
-		defer resp.Body.Close()
 
 		if err != nil {
 			panic(err)
 		}
+		defer resp.Body.Close()
 
 	}
 
@@ -36,11 +36,11 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 		s := fmt.Sprintf("%scounter/%s/%v", ServerAdr, val.name, val.Val)
 		//		fmt.Printf("%s\n", s)
 		resp, err := http.Post(s, "Content-Type: text/plain", nil)
-		defer resp.Body.Close()
 
 		if err != nil {
 			panic(err)
 		}
+		defer resp.Body.Close()
 
 	}
 	fmt.Printf("\n")
