@@ -94,7 +94,7 @@ func ErrorPage(res http.ResponseWriter, req *http.Request) {
 	//	fmt.Printf("req.Method3=%v\n", req.Method)
 	if req.Method == http.MethodPost {
 		aSt := strings.Split(req.URL.Path, "/")
-		if aSt[1] == "update" && aSt[2] != "counter" {
+		if aSt[1] == "update" && aSt[2] != "counter" && aSt[2] != "gauge" {
 			res.WriteHeader(http.StatusBadRequest)
 			return
 		}
