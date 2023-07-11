@@ -21,13 +21,7 @@ func GaugePage(res http.ResponseWriter, req *http.Request) {
 		metricVal := aSt[4]
 		//		fmt.Printf("request.URL.Path=%v\n", req.URL.Path)
 		//		fmt.Printf("metricVal=%v\n", metricVal)
-		if metricName == "" || metricVal == "" {
-			res.WriteHeader(http.StatusNotFound)
-			return
-		}
-
-		// Проверка корректности
-		if len(metricName) > 100 {
+		if metricName == "" || metricVal == "" || len(metricName) > 100 {
 			res.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -65,16 +59,12 @@ func CounterPage(res http.ResponseWriter, req *http.Request) {
 		metricVal := aSt[4]
 		//		fmt.Printf("request.URL.Path=%v\n", req.URL.Path)
 		//		fmt.Printf("metricVal=%v\n", metricVal)
-		if metricName == "" || metricVal == "" {
-			res.WriteHeader(http.StatusNotFound)
+		if metricName == "" || metricVal == "" || len(metricName) > 100 {
+			res.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		// Проверка корректности
-		if len(metricName) > 100 {
-			res.WriteHeader(http.StatusBadRequest)
-			return
-		}
 
 		metricCn, err := strconv.ParseInt(metricVal, 10, 64)
 		if err != nil {
