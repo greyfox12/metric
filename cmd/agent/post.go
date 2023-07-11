@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
@@ -30,7 +30,7 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 		}
 
 		defer resp.Body.Close()
-		_, _ = ioutil.ReadAll(resp.Body)
+		_, _ = io.ReadAll(resp.Body)
 	}
 
 	for _, val := range co {
@@ -43,7 +43,7 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 			//			panic(err)
 		}
 		defer resp.Body.Close()
-		_, _ = ioutil.ReadAll(resp.Body)
+		_, _ = io.ReadAll(resp.Body)
 
 	}
 	return 0
