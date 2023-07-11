@@ -28,6 +28,7 @@ func main() {
 		r.Route("/update", func(r chi.Router) {
 			r.Post("/gauge/{metricName}/{metricVal}", GaugePage)
 			r.Post("/counter/{metricName}/{metricVal}", CounterPage)
+			r.Post("/*", ErrorPage)
 		})
 	})
 
