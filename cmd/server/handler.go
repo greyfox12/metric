@@ -95,7 +95,7 @@ func ErrorPage(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
 		aSt := strings.Split(req.URL.Path, "/")
 		if aSt[1] == "update" && aSt[2] != "counter" {
-			res.WriteHeader(http.StatusMethodNotAllowed)
+			res.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
