@@ -94,7 +94,7 @@ func ErrorPage(res http.ResponseWriter, req *http.Request) {
 	//	fmt.Printf("req.Method3=%v\n", req.Method)
 	if req.Method == http.MethodPost {
 
-		res.WriteHeader(http.StatusBadRequest)
+		res.WriteHeader(http.StatusNotFound)
 		return
 	}
 
