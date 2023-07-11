@@ -39,6 +39,7 @@ func (c Client) PostCounter(ga map[int]GaugeMetric, co map[int]CounterMetric) in
 	for _, val := range co {
 		s := fmt.Sprintf("%s/update/counter/%s/%v", c.url, val.name, val.Val)
 		resp, err := http.Post(s, "Content-Type: text/plain", nil)
+		//		fmt.Printf("%v\n", resp)
 
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)

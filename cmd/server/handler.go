@@ -17,6 +17,11 @@ func GaugePage(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
 		aSt := strings.Split(req.URL.Path, "/")
 
+		if len(aSt) != 5 || aSt[1] != "update" || aSt[2] != "gauge" {
+			res.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		metricName := aSt[3]
 		metricVal := aSt[4]
 		//		fmt.Printf("request.URL.Path=%v\n", req.URL.Path)
@@ -54,7 +59,11 @@ func CounterPage(res http.ResponseWriter, req *http.Request) {
 
 	if req.Method == http.MethodPost {
 		aSt := strings.Split(req.URL.Path, "/")
-
+		//		fmt.Printf("len(aSt)=%v\n", len(aSt))
+		if len(aSt) != 5 || aSt[1] != "update" || aSt[2] != "counter" {
+			res.WriteHeader(http.StatusBadRequest)
+			return
+		}
 		metricName := aSt[3]
 		metricVal := aSt[4]
 		//		fmt.Printf("request.URL.Path=%v\n", req.URL.Path)
