@@ -2,13 +2,16 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/caarlos0/env"
 	"github.com/go-chi/chi/v5"
 )
 
 const LenArr = 10000
+const DefServerAdr = "localhost:8080"
 
 type tMetric struct {
 	gauge   map[string]float64
@@ -17,9 +20,23 @@ type tMetric struct {
 
 var MemMetric tMetric
 
-func main() {
+type Config struct {
+	address string `env:"ADDRESS"`
+}
 
-	IPAddress := flag.String("a", "localhost:8080", "Endpoint server IP address host:port")
+var cfg Config
+
+func main() {
+	err := env.Parse(&cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if cfg.address == "" {
+		cfg.address = DefServerAdr
+	}
+	fmt.Printf("ServerAdr = %v\n", cfg.address)
+
+	IPAddress := flag.String("a", cfg.address, "Endpoint server IP address host:port")
 	flag.Parse()
 
 	r := chi.NewRouter()

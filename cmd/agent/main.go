@@ -3,24 +3,29 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"math/rand"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/caarlos0/env"
 )
 
-//const (
-//	ServerAdr      = "http://localhost:8080"
-//	pollInterval   = 2
-//	reportInterval = 10
-//)
+const (
+	DefServerAdr      = "http://localhost:8080"
+	DefPollInterval   = 2
+	DefReportInterval = 10
+)
 
 type counter int64
 type gauge float64
+
 type CounterMetric struct {
 	name string
 	Val  counter
 }
+
 type GaugeMetric struct {
 	name string
 	Val  gauge
@@ -30,6 +35,8 @@ var ListCounter map[int]CounterMetric
 var ListGauge map[int]GaugeMetric
 
 // ///////////
+var defHost = DefServerAdr
+
 type NetAddress string
 
 func (o *NetAddress) Set(flagValue string) error {
@@ -43,25 +50,50 @@ func (o *NetAddress) Set(flagValue string) error {
 }
 
 func (o *NetAddress) String() string {
-	fmt.Printf("flag\n")
+	//	fmt.Printf("flag\n")
 	if *o == "" {
-		*o = "http://localhost:8080"
+		//		*o = NetAddress(cfg.address)
+		*o = NetAddress(DefServerAdr)
 	}
 	return string(*o)
 }
 
 //////////////
 
+type Config struct {
+	address        string `env:"ADDRESS"`
+	reportInterval int    `env:"REPORT_INTERVAL"`
+	pollInterval   int    `env:"POLL_INTERVAL"`
+}
+
+var cfg Config
+
 func main() {
+	// Читаю окружение
+	//	var cfg Config
+	err := env.Parse(&cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if cfg.pollInterval == 0 {
+		cfg.pollInterval = DefPollInterval
+	}
+	if cfg.reportInterval == 0 {
+		cfg.reportInterval = DefReportInterval
+	}
+	if cfg.address == "" {
+		cfg.address = defHost
+	}
+
 	ServerAdr := new(NetAddress) // {"http://localhost:8080"}
 	_ = flag.Value(ServerAdr)
 
 	// проверка реализации
 	flag.Var(ServerAdr, "a", "Net address host:port")
 
-	//	ServerAdr := flag.String("a", "http://localhost:8080", "Endpoint server IP address host:port")
-	pollInterval := flag.Int("p", 2, "Pool interval sec.")
-	reportInterval := flag.Int("r", 10, "Report interval sec.")
+	pollInterval := flag.Int("p", cfg.pollInterval, "Pool interval sec.")
+	reportInterval := flag.Int("r", cfg.reportInterval, "Report interval sec.")
 	flag.Parse()
 
 	fmt.Printf("ServerAdr = %v\n", *ServerAdr)
