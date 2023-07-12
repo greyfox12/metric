@@ -3,13 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"math/rand"
+	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
-
-	"github.com/caarlos0/env/v6"
 )
 
 const (
@@ -35,7 +34,7 @@ var ListCounter map[int]CounterMetric
 var ListGauge map[int]GaugeMetric
 
 // ///////////
-var defHost = DefServerAdr
+//var defHost = DefServerAdr
 
 type NetAddress string
 
@@ -51,30 +50,30 @@ func (o *NetAddress) Set(flagValue string) error {
 
 func (o *NetAddress) String() string {
 	//	fmt.Printf("flag\n")
-	if *o == "" {
-		//		*o = NetAddress(cfg.address)
-		*o = NetAddress(DefServerAdr)
-	}
+	//	if *o == "" {
+	//		*o = NetAddress(cfg.address)
+	// b		*o = NetAddress(DefServerAdr)
+	//	}
 	return string(*o)
 }
 
 //////////////
 
 type Config struct {
-	address        string `env:"ADDRESS"`
-	reportInterval int    `env:"REPORT_INTERVAL"`
-	pollInterval   int    `env:"POLL_INTERVAL"`
+	address        string
+	reportInterval int
+	pollInterval   int
 }
-
-var cfg Config
 
 func main() {
 	// Читаю окружение
-	//	var cfg Config
-	err := env.Parse(&cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
+	var cfg Config
+	cfg.address, _ = os.LookupEnv("ADDRESS")
+	tmp, _ := os.LookupEnv("REPORT_INTERVAL")
+	cfg.reportInterval, _ = strconv.Atoi(tmp)
+	tmp, _ = os.LookupEnv("POLL_INTERVAL")
+	cfg.pollInterval, _ = strconv.Atoi(tmp)
+	fmt.Printf("cfg.address=%s", cfg.address)
 
 	if cfg.pollInterval == 0 {
 		cfg.pollInterval = DefPollInterval
@@ -82,8 +81,11 @@ func main() {
 	if cfg.reportInterval == 0 {
 		cfg.reportInterval = DefReportInterval
 	}
+	if cfg.address != "" && !strings.HasPrefix(cfg.address, "http://") {
+		cfg.address = "http://" + cfg.address
+	}
 	if cfg.address == "" {
-		cfg.address = defHost
+		cfg.address = DefServerAdr
 	}
 
 	ServerAdr := new(NetAddress) // {"http://localhost:8080"}
@@ -96,6 +98,9 @@ func main() {
 	reportInterval := flag.Int("r", cfg.reportInterval, "Report interval sec.")
 	flag.Parse()
 
+	if *ServerAdr == "" {
+		ServerAdr = (*NetAddress)(&cfg.address)
+	}
 	fmt.Printf("ServerAdr = %v\n", *ServerAdr)
 
 	var m runtime.MemStats

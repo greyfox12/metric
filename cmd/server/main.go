@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
-	"github.com/caarlos0/env/v6"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 )
 
 const LenArr = 10000
@@ -20,24 +20,17 @@ type tMetric struct {
 
 var MemMetric tMetric
 
-type Config struct {
-	address string `env:"ADDRESS"`
-}
-
-var cfg Config
-
 func main() {
+	var cfg string
+	var ok bool
 
-	err := env.Parse(&cfg)
-	if err != nil {
-		log.Fatal(err)
+	if cfg, ok = os.LookupEnv("ADDRESS"); !ok {
+		cfg = DefServerAdr
 	}
-	if cfg.address == "" {
-		cfg.address = DefServerAdr
-	}
-	fmt.Printf("ServerAdr = %v\n", cfg.address)
 
-	IPAddress := flag.String("a", cfg.address, "Endpoint server IP address host:port")
+	fmt.Printf("ServerAdr = %v\n", cfg)
+
+	IPAddress := flag.String("a", cfg, "Endpoint server IP address host:port")
 	flag.Parse()
 
 	r := chi.NewRouter()
