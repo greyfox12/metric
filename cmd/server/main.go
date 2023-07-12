@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/caarlos0/env"
-	"github.com/go-chi/chi/v5"
+	"github.com/caarlos0/env/v6"
+	"github.com/go-chi/chi"
 )
 
 const LenArr = 10000
@@ -27,6 +27,7 @@ type Config struct {
 var cfg Config
 
 func main() {
+
 	err := env.Parse(&cfg)
 	if err != nil {
 		log.Fatal(err)
