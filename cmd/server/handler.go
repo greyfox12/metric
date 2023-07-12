@@ -143,5 +143,5 @@ func OneMetricPage(res http.ResponseWriter, req *http.Request) {
 
 	//	fmt.Printf("metricName=%v\n", metricName)
 
-	io.WriteString(res, fmt.Sprintf("%v", metricName, Val))
+	io.WriteString(res, fmt.Sprintf("%v", Val))
 }
