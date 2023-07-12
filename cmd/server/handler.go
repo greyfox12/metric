@@ -136,8 +136,16 @@ func OneMetricPage(res http.ResponseWriter, req *http.Request) {
 
 	metricName := aSt[3]
 	if aSt[2] == "gauge" {
+		if _, ok := MemMetric.gauge[metricName]; !ok {
+			res.WriteHeader(http.StatusNotFound)
+			return
+		}
 		Val = fmt.Sprintf("%v", MemMetric.gauge[metricName])
 	} else {
+		if _, ok := MemMetric.counter[metricName]; !ok {
+			res.WriteHeader(http.StatusNotFound)
+			return
+		}
 		Val = fmt.Sprintf("%v", MemMetric.counter[metricName])
 	}
 
