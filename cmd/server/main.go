@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 
@@ -18,6 +19,9 @@ var MemMetric tMetric
 
 func main() {
 
+	IPAddress := flag.String("a", "localhost:8080", "Endpoint server IP address host:port")
+	flag.Parse()
+
 	r := chi.NewRouter()
 
 	// определяем хендлер, который выводит определённую машину
@@ -32,7 +36,7 @@ func main() {
 		})
 	})
 
-	log.Fatal(http.ListenAndServe(`:8080`, r))
+	log.Fatal(http.ListenAndServe(*IPAddress, r))
 	/*	mux := http.NewServeMux()
 
 		mux.HandleFunc(`/update/gauge/`, GaugePage)
